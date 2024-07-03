@@ -1,15 +1,17 @@
 #include <iostream>
 #include <string>
 #include "Calculator.h"
+
 using namespace std;
-class Calculator {
+
+class Number {
 private:
    int value;
 
 public:
-    Calculator::Calculator(int val) : value(val) {}
+    Number::Number(int val) : value(val) {}
 
-    Calculator Calculator::operator+(const Calculator& other) const {
+    Number Number::operator+(const Number& other) const {
         return Calculator(value + other.value);
     }
     Calculator Calculator::operator-(const Calculator& other) const {
@@ -60,7 +62,8 @@ public:
 };
 
 int main() {
-    Calculator calc1, calc2;
+    Number num_1, num_2;
+    num_1 + num_2;
     string operation;
     cin >> calc1 >> calc2;
     cin >> operation;
