@@ -6,6 +6,7 @@
 #include <iostream>
 #include <vector>
 #include <unordered_map>
+#include <cmath>
 
 using namespace std;
 
@@ -30,6 +31,10 @@ public:
     string infoAboutCar() {
         string info = "brand: " + brand + " year: " + to_string(year) + " color: " + color + " price: " + to_string(price);
         return info;
+    }
+
+    int getPrice() const {
+        return price;
     }
 };
 
@@ -57,8 +62,15 @@ public:
         }
     }
 
-    Car buyCar(int id) {
-
+    bool buyCar(int id, Car& boughtCar) {
+        auto it = sellingCars.find(id);
+        if (it != sellingCars.end()) {
+            boughtCar = it->second;
+            sellingCars.erase(it);
+            return true;
+        } else {
+            return false;
+        }
     }
 };
 
@@ -105,22 +117,73 @@ public:
     }
 };
 
+class Bank{
+private:
+    int money;
+    int account;
+public:
+    Bank() {
+        account = 0;
+    }
+    Bank(int money, int account) {
+        this->money = money;
+        this->account = account;
+    }
 
+    void putMoney(int money) {
+        account += money;
+    }
+
+    void takeMoney(int money) {
+        account -= money;
+    }
+
+    void showAccount() {
+        cout << "Account: "<< account << endl;
+    }
+
+    int getAccount() const {
+        return account;
+    }
+
+};
 int main() {
     Person person("Mikhail", 23, 100000);
 
-    Store car_store;
+    Store store;
+    Car boughtCar;
     Car car_1("BMW", 90000, 2020, "black");
     Car car_2("Mercedes", 100000, 2021, "red");
 
-    //
+    store.addCar(car_1);
+    store.addCar(car_2);
 
-    car_store.addCar(car_1);
-    car_store.addCar(car_2);
+    Bank bank;
+    bank.putMoney(20000);
+    bank.takeMoney(1000);
+    bank.showAccount();
 
-    car_store.showCars();
+    int carPrice = car_1.getPrice();
+    int accountBalance = bank.getAccount();
 
-    Car car = car_store.buyCar(2);
-    person.setCar(car);
+    int id = 1;
+    if (store.buyCar(id, boughtCar)) {
+        cout << "Success purchase car: " << boughtCar.infoAboutCar() << endl;
+    } else {
+        cout << "Failed purchase car: " << id << endl;
+    }
+
+    if (carPrice <= accountBalance) {
+        cout << "You can buy a car" << endl;
+    } else {
+        cout << "You can't buy a car" << endl;
+    }
+    if (accountBalance - carPrice > 0) {
+        cout << "Your Account: " << accountBalance - carPrice << endl;
+    } else {
+        cout << "Take out a loan: " << abs(accountBalance - carPrice) << endl;
+    }
+    cout << "Update list of cars: " << endl;
+    store.showCars();
 
 }
