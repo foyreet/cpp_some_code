@@ -12,7 +12,7 @@ public:
         this->age = age;
     }
 
-    string InfoAboutPerson() {
+    string infoAboutPerson() {
         string info = "name: " + name + "age: " + to_string(age);
         return info;
     }
@@ -30,7 +30,7 @@ public:
 
     void showQueue() {
         for (auto person : queue_store) {
-            cout << person.InfoAboutPerson() << endl;
+            cout << person.infoAboutPerson() << endl;
         }
     }
 
