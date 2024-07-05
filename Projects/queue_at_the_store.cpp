@@ -1,5 +1,5 @@
 #include <iostream>
-#include <map>
+#include <vector>
 using namespace std;
 
 class Person {
@@ -21,26 +21,21 @@ public:
 
 class Queue {
 private:
-    int index;
-    map<int, Person> queue_store;
+    vector<Person> queue_store;
 public:
-    Queue() {
-        index = 1;
-    }
 
     void addPerson(Person person) {
-        queue_store.insert(make_pair(index, person));
-        index++;
+        queue_store.push_back(person);
     }
 
     void showQueue() {
-        for (auto& person : queue_store) {
-            cout << "id: " << person.first << " info about person: " << person.second.InfoAboutPerson() << endl;
+        for (auto person : queue_store) {
+            cout << person.InfoAboutPerson() << endl;
         }
     }
 
     void deletePerson() {
-        queue_store.erase(queue_store.size());
+        queue_store.pop_back();
     }
 
 };
