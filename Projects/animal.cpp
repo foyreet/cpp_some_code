@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <vector>
 using namespace std;
 
 class Animal {
@@ -10,9 +11,11 @@ public:
         cout << "Name:" << name << " Age:" << age << endl;
     }
 
-    virtual void Voice() const {
-        cout << "voice";
+    void setName(string name) {
+        this->name = name;
     }
+
+    virtual void voice() const = 0; // чисто виртуальная функция
 // protected здесь нужен для доступа к членам класса в производных классах
 protected:
     string name;
@@ -36,11 +39,17 @@ public:
        cout << "I'm a wild animal" << endl;
     }
 };
+
 class Dog: public Pets {
 public:
     Dog(string name, int age) : Pets(name, age) {}
 
-    void Voice() const override {
+    // деструктор выполнится перед удалением объекта
+    ~Dog()  {
+        cout << "Объект Dog удалён" << endl;
+    }
+
+    void voice() const override {
         cout << "Dog: " << "Gav, gav" << endl;
     }
 };
@@ -49,8 +58,8 @@ class Cat: public Pets {
 public:
     Cat(string name, int age) : Pets(name, age) {}
 
-    void Voice() const override {
-       cout << "Cat: " << "Mya, Mya" << endl;
+    void voice() const override {
+       cout << "Cat: " << "Meow, Meow" << endl;
     }
 };
 
@@ -58,7 +67,7 @@ class Wolf: public Wild{
 public:
     Wolf(string name, int age) : Wild(name, age) {}
 
-    void Voice() const override {
+    void voice() const override { // signature
        cout << "Wolf: " << "Wou, wou" << endl;
     }
 };
@@ -69,13 +78,22 @@ int main() {
     Dog dog("Bobik", 5);
     Cat cat("Musya", 4);
     Wolf wolf("Tren", 6);
-    dog.infoAboutAnimal();
-    dog.Voice();
-    dog.Pets::Voice();
-    cat.infoAboutAnimal();
-    cat.Voice();
-    cat.Pets::Voice();
-    wolf.infoAboutAnimal();
-    wolf.Voice();
-    wolf.Wild::Voice();
+
+    animals.push_back(new Dog("Bobik", 5));
+    animals.push_back(new Cat("Musya", 4));
+    animals.push_back(new Wolf("Tren", 6));
+
+    for (const auto& animal : animals) {
+        animal->voice();
+        cout << "Address: " << &animal << endl;
+    }
+
+    // Освобождение памяти
+    for (auto* animal : animals) {
+        delete animal;
+    }
+
+    int* a = new int(12);
+
+    delete a;
 }
