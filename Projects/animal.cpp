@@ -9,6 +9,10 @@ public:
     void infoAboutAnimal() {
         cout << "Name:" << name << " Age:" << age << endl;
     }
+
+    virtual void Voice() const {
+        cout << "voice";
+    }
 // protected здесь нужен для доступа к членам класса в производных классах
 protected:
     string name;
@@ -19,8 +23,8 @@ class Pets: public Animal{
 public:
     Pets(string name, int age) : Animal(name, age) {}
 
-    void sayPets() {
-        cout << "I'm a pet" << endl;
+    void Voice() const override {
+       cout << "I'm a pet" << endl;
     }
 };
 
@@ -28,16 +32,16 @@ class Wild: public Animal{
 public:
     Wild(string name, int age) : Animal(name, age) {}
 
-    void sayWild() {
-        cout << "I'm a wild animal" << endl;
+    void Voice() const override {
+       cout << "I'm a wild animal" << endl;
     }
 };
 class Dog: public Pets {
 public:
     Dog(string name, int age) : Pets(name, age) {}
 
-    void sayDog() {
-        cout << "Dog " << name << " Gav, gav" << endl;
+    void Voice() const override {
+        cout << "Dog: " << "Gav, gav" << endl;
     }
 };
 
@@ -45,8 +49,8 @@ class Cat: public Pets {
 public:
     Cat(string name, int age) : Pets(name, age) {}
 
-    void sayCat() {
-        cout << "Cat " << name << " Mya, Mya" << endl;
+    void Voice() const override {
+       cout << "Cat: " << "Mya, Mya" << endl;
     }
 };
 
@@ -54,8 +58,8 @@ class Wolf: public Wild{
 public:
     Wolf(string name, int age) : Wild(name, age) {}
 
-    void sayWolf() {
-        cout << "Wolf " << name << " Wou, wou" << endl;
+    void Voice() const override {
+       cout << "Wolf: " << "Wou, wou" << endl;
     }
 };
 
@@ -66,12 +70,12 @@ int main() {
     Cat cat("Musya", 4);
     Wolf wolf("Tren", 6);
     dog.infoAboutAnimal();
-    dog.sayDog();
-    dog.sayPets();
+    dog.Voice();
+    dog.Pets::Voice();
     cat.infoAboutAnimal();
-    cat.sayCat();
-    cat.sayPets();
+    cat.Voice();
+    cat.Pets::Voice();
     wolf.infoAboutAnimal();
-    wolf.sayWild();
-    wolf.sayWolf();
+    wolf.Voice();
+    wolf.Wild::Voice();
 }
