@@ -4,48 +4,71 @@ using namespace std;
 class Stack {
 private:
     int index;
-    static int size; // общий для всех экземпляров класса
-    int arr[10];
+    int stackSize;
+    int* a;
+
+    void initialize(int initialSize) {
+        a = new int[initialSize];
+        stackSize = initialSize;
+        index = 0;
+    }
 public:
 
     Stack() {
-        int index = 0;
+        initialize(8);
     }
-
-    Stack(int initArr[size]) {
-        for (int i = 0; i < size; i++) {
-            arr[i] = 0;
-        }
+    Stack(int initialSize) {
+        initialize(initialSize);
     }
-
-    void inputArr() {
-        for (int i = 0; i < size; i++) {
-            cout << arr[i] << endl;
-        }
+    ~Stack() {
+        delete[] a;
     }
 
     void push(int number) {
-        arr[index] = number;
+        if (index == stackSize) {
+            int* temp = new int[stackSize * 2];
+            for (int i = 0; i < stackSize; i++) {
+                temp[i] = a[i];
+            }
+            delete[] a;
+            a = temp;
+            stackSize *= 2;
+        }
+
+        a[index] = number;
         index++;
     }
 
-    void pop() {
-        for (int i = index - 1; i < size - 1; i++) {
-            arr[i] = arr[i+1];
+    int pop() {
+        if (index == 0) {
+            cout << "Stack is empty" << endl;
+            return 0;
         }
+
+        index--;
+        return a[index];
+    }
+
+    int peek() {
+        if (index == 0) {
+            cout << "Stack is empty" << endl;
+            return 0;
+        }
+
+        return a[index - 1];
     }
 };
 
-int Stack::size = 10;
-
 int main() {
-    int initArr[10];
-    Stack stack(initArr);
-    stack.push(2);
-    stack.push(3);
-    stack.push(4);
-    stack.push(5);
-    stack.pop();
-    stack.inputArr();
+    Stack stack(20);
 
+    stack.push(12);
+    stack.push(4);
+
+    cout << stack.pop() << endl;
+    cout << stack.pop() << endl;
+    cout << stack.pop() << endl;
+    cout << stack.pop() << endl;
+
+    cout << "Finish" << endl;
 }
